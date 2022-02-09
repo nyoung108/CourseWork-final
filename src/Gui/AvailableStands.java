@@ -5,6 +5,8 @@
  */
 package Gui;
 
+import static Gui.TicketDetails.ticket;
+import Objects.eventStringObject;
 import libraryFunctions.databaseOrders;
 
 /**
@@ -13,12 +15,21 @@ import libraryFunctions.databaseOrders;
  */
 public class AvailableStands extends javax.swing.JFrame {
 
-    private String ticketType;
-    private String eventName;
-    private String standName;
+    public static eventStringObject stand;
+    public static eventStringObject tempStand;
+
+    public void getEvent() {
+        tempStand = TicketDetails.returnEvent();
+    }
+
+    public static eventStringObject returnEvent() {
+        return stand;
+    }
 
     public AvailableStands() {
         initComponents();
+        getEvent();
+        hideButtons();
     }
 
     /**
@@ -181,65 +192,94 @@ public class AvailableStands extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void standOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_standOneActionPerformed
-        
-        standName = "1";
-        toSeats(standName);
+        String standName = "4";
+        eventStringObject eventEntered = new eventStringObject(tempStand.getEvent(), tempStand.getType(), standName);
+        ticket = eventEntered;
+        availableSeats seats = new availableSeats();
+
+        seats.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_standOneActionPerformed
 
     private void standThreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_standThreeActionPerformed
-        
-        standName = "3";
-        toSeats(standName);
+        String standName = "4";
+        eventStringObject eventEntered = new eventStringObject(tempStand.getEvent(), tempStand.getType(), standName);
+        ticket = eventEntered;
+        availableSeats seats = new availableSeats();
+
+        seats.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_standThreeActionPerformed
 
     private void standTwoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_standTwoActionPerformed
-        
-        standName = "2";
-        toSeats(standName);
+        String standName = "4";
+        eventStringObject eventEntered = new eventStringObject(tempStand.getEvent(), tempStand.getType(), standName);
+        ticket = eventEntered;
+        availableSeats seats = new availableSeats();
+
+        seats.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_standTwoActionPerformed
 
     private void standFourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_standFourActionPerformed
-        
-        standName = "4";
-        toSeats(standName);
+        String standName = "4";
+        eventStringObject eventEntered = new eventStringObject(tempStand.getEvent(), tempStand.getType(), standName);
+        ticket = eventEntered;
+        availableSeats seats = new availableSeats();
+
+        seats.setVisible(true);
+        this.dispose();
+
     }//GEN-LAST:event_standFourActionPerformed
 
     private void standFiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_standFiveActionPerformed
-        
-        standName = "5";
-        toSeats(standName);
+        String standName = "4";
+        eventStringObject eventEntered = new eventStringObject(tempStand.getEvent(), tempStand.getType(), standName);
+        ticket = eventEntered;
+        availableSeats seats = new availableSeats();
+
+        seats.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_standFiveActionPerformed
 
     private void standSixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_standSixActionPerformed
-        
-        standName = "6";
-        toSeats(standName);
+        String standName = "4";
+        eventStringObject eventEntered = new eventStringObject(tempStand.getEvent(), tempStand.getType(), standName);
+        ticket = eventEntered;
+        availableSeats seats = new availableSeats();
+
+        seats.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_standSixActionPerformed
 
     private void standSevenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_standSevenActionPerformed
-        
-        standName = "7";
-        toSeats(standName);
-    }//GEN-LAST:event_standSevenActionPerformed
-    public void toSeats(String standName) {
-        databaseOrders.setStand(standName);
+        String standName = "4";
+        eventStringObject eventEntered = new eventStringObject(tempStand.getEvent(), tempStand.getType(), standName);
+        ticket = eventEntered;
         availableSeats seats = new availableSeats();
-        
-        seats.setVisible(true) ;
+
+        seats.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_standSevenActionPerformed
+    public void toSeats() {
+
+        availableSeats seats = new availableSeats();
+
+        seats.setVisible(true);
         this.dispose();
     }
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         TicketDetails ticket = new TicketDetails();
-        
-        ticket.setVisible(true) ;
+
+        ticket.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
     public void getTicketType() {
-        ticketType = databaseOrders.returnTicketType();
+
     }
 
     public void hideButtons() {
-        if (ticketType.equals("vip")) {
+        if (ticket.getType().equals("vip")) {
             standOne.setVisible(true);
             standTwo.setVisible(false);
             standThree.setVisible(false);
@@ -248,7 +288,7 @@ public class AvailableStands extends javax.swing.JFrame {
             standSix.setVisible(false);
             standSeven.setVisible(false);
 
-        } else if (ticketType.equals("child")) {
+        } else if (ticket.getType().equals("child")) {
             standOne.setVisible(false);
             standTwo.setVisible(false);
             standThree.setVisible(true);
@@ -256,7 +296,7 @@ public class AvailableStands extends javax.swing.JFrame {
             standFive.setVisible(false);
             standSix.setVisible(false);
             standSeven.setVisible(false);
-        } else if (ticketType.equals("disabled")) {
+        } else if (ticket.getType().equals("disabled")) {
             standOne.setVisible(false);
             standTwo.setVisible(true);
             standThree.setVisible(true);
@@ -264,7 +304,7 @@ public class AvailableStands extends javax.swing.JFrame {
             standFive.setVisible(false);
             standSix.setVisible(false);
             standSeven.setVisible(false);
-        } else if (ticketType.equals("standard")) {
+        } else if (ticket.getType().equals("standard")) {
             standOne.setVisible(false);
             standTwo.setVisible(true);
             standThree.setVisible(false);
@@ -306,10 +346,10 @@ public class AvailableStands extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AvailableStands().setVisible(true);
-               // AvailableStands standPage = new AvailableStands();
-               // standPage.hideButtons();
-               // standPage.repaint();
-              // standPage.setVisible(true);
+                // AvailableStands standPage = new AvailableStands();
+                // standPage.hideButtons();
+                // standPage.repaint();
+                // standPage.setVisible(true);
             }
         });
     }

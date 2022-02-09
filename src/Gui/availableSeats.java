@@ -19,14 +19,18 @@ import java.util.Comparator;
  */
 public class availableSeats extends javax.swing.JFrame {
 
-    private String ticketType;
-    private String eventName;
-    private String standName;
+    public static eventStringObject seat;
+    public static eventStringObject tempSeat;
+
+    public void getEvent() {
+        tempSeat = AvailableStands.returnEvent();
+    }
     private ArrayList<Integer> seatsSelected;
     private ArrayList<Integer> takenSeats;
 
     public availableSeats() {
         initComponents();
+        getEvent();
     }
 
     /**
@@ -595,34 +599,35 @@ public class availableSeats extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
     private void getTakenSeats() {
         ArrayList<String> seatIDs = new ArrayList<>();
-        databaseOrders.getTakenSeatID(eventName, seatIDs);
+        databaseOrders.getTakenSeatID(tempSeat.getEvent(), seatIDs);
 
         for (int i = 0; i <= seatIDs.size(); i++) {
-            int row = databaseOrders.getSeatRow(standName, eventName);
-            int column = databaseOrders.getSeatColumn(standName, eventName);
+            int row = databaseOrders.getSeatRow(tempSeat.getStand(), tempSeat.getEvent());
+            int column = databaseOrders.getSeatColumn(tempSeat.getStand(), tempSeat.getEvent());
             int seat = row * column;
             takenSeats.add(seat);
         }
     }
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
         boolean valid = validSeats();
-        eventName = databaseOrders.returnEventName();
-        standName = databaseOrders.returnStand();
-        ticketType = databaseOrders.returnTicketType();
+        
         if (valid) {
             for (int i = 0; i <= seatsSelected.size(); i++) {
 
                 int row = seatsSelected.get(i) / 8;
                 int column = seatsSelected.get(i) % 8;
-                String eventID = databaseOrders.getEventID(eventName);
+                String eventID = databaseOrders.getEventID(tempSeat.getEvent());
                 String rowStr = Integer.toString(row);
                 String columnStr = Integer.toString(column);
-                String seatID = String.join(standName, rowStr, columnStr);
-                double price = ticketPriceGenerator.ticketPrice(row, standName, eventName);
+                String seatID = String.join(tempSeat.getStand(), rowStr, columnStr);
+                double addedPrice = ticketPriceGenerator.rowPrice(row);
+                seatDetailsObject seat = new seatDetailsObject(seatID, row, column, tempSeat.getEvent(), addedPrice);
+                databaseOrders.addSeat(seat);
+                double price = ticketPriceGenerator.ticketPrice(row, tempSeat.getEvent(), tempSeat.getStand());
                 String ticketID = generateId.uniqueId();
                 String bookingID = generateId.uniqueId();
                 String userID = databaseOrders.returnUserID();
-                Objects.ticketDetailsObject ticket = new ticketDetailsObject(ticketID, eventID, seatID, ticketType, price);
+                Objects.ticketDetailsObject ticket = new ticketDetailsObject(ticketID, eventID, seatID, tempSeat.getType(), price);
                 databaseOrders.addTicket(ticket);
                 LocalDate dateBooked = LocalDate.now();
 
@@ -645,7 +650,7 @@ public class availableSeats extends javax.swing.JFrame {
         ArrayList<String> ticketsBookedForEvent = new ArrayList<>();
         userTickets = databaseOrders.getTicketID();
         for (int i = 0; i < userTickets.size(); i++) {
-            ticketsBookedForEvent.add(databaseOrders.getTicketIDChosen(userTickets.get(i),eventName));
+            ticketsBookedForEvent.add(databaseOrders.getTicketIDChosen(userTickets.get(i),tempSeat.getStand()));
         }
         if (seatsSelected.size() > 6 - userTickets.size()) {
             valid = false;

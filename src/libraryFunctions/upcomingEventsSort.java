@@ -9,151 +9,110 @@ import java.util.ArrayList;
 
 
 public class upcomingEventsSort {
-    public static ArrayList mergedList(ArrayList<String> unsortedEvents, String sortRequested) {
-        ArrayList<String> sortedList = new ArrayList<>();
-        splitList(unsortedEvents, sortedList, sortRequested);
-        return null;
-    }
-
-    public static ArrayList splitList(ArrayList<String> unsortedEvents, ArrayList<String> sortedList, String sortRequested) {
-
-        if (unsortedEvents.size() <= 1) {
-            return unsortedEvents;
-        } else {
-            int midpoint = unsortedEvents.size() / 2;
-            ArrayList<String> leftList = new ArrayList<String>();
-            for (int i = 0; i < midpoint; i++) {
-                leftList.add(unsortedEvents.get(i));
-            }
-            ArrayList<String> rightList = new ArrayList<String>();
-            for (int i = midpoint; i < unsortedEvents.size(); i++) {
-                rightList.add(unsortedEvents.get(i));
-            }
-            splitList(leftList, sortedList, sortRequested);
-            splitList(rightList, sortedList, sortRequested);
-
-            switch (sortRequested) {
-                case "az":
-                    mergedAZ(sortedList, leftList, rightList);
-                    break;
-                case "za":
-                    mergedAZ(sortedList, leftList, rightList);
-                    break;
-                case "date":
-                    mergedDate(sortedList, leftList, rightList);
-                    break;
-            }
+    public static void mergedList(ArrayList<String> unsortedList, String sortRequested) {
+        int size = unsortedList.size();
+        String[] unsortedEvents = new String[size];
+        for (int i = 0; i < size; i++) {
+            unsortedEvents[i] = unsortedList.get(i);
+            System.out.println(unsortedEvents[i]);
         }
-        return sortedList;
-    }
-
-    public static ArrayList mergedAZ(ArrayList<String> sortedList, ArrayList<String> leftList, ArrayList<String> rightList) {
-        int leftPointer = 0;
-        int rightPointer = 0;
-        int sortedPointer = 0;
-
-        while (leftPointer < leftList.size() && rightPointer < rightList.size()) {
-
-            if (leftList.get(leftPointer).equals(rightList.get(rightPointer))) {
-                sortedList.add(leftList.get(leftPointer));
-                leftPointer = leftPointer + 1;
-                sortedList.add(rightList.get(rightPointer));
-                rightPointer = rightPointer + 1;
-            } else {
-                int compare = leftList.get(leftPointer).compareToIgnoreCase(rightList.get(rightPointer));
-                if (compare < 0) {
-                    sortedList.add(leftList.get(leftPointer));
-                    leftPointer = leftPointer + 1;
-                } else {
-                    sortedList.add(rightList.get(rightPointer));
-                    rightPointer = rightPointer + 1;
-                }
-                sortedPointer = sortedPointer + 1;
-            }
+        System.out.println("");
+        int maxSize = unsortedEvents.length;
+        splitList(unsortedEvents, maxSize, sortRequested);
+        if (sortRequested.equals("za")) {
+            stack.reverseList(unsortedList);
         }
-        while (leftPointer < leftList.size()) {
-            sortedList.add(leftList.get(leftPointer));
-            leftPointer = leftPointer + 1;
-            sortedPointer = sortedPointer + 1;
-        }
-        while (rightPointer < rightList.size()) {
-            sortedList.add(rightList.get(rightPointer));
-            rightPointer = rightPointer + 1;
-            sortedPointer = sortedPointer + 1;
-        }
-        return sortedList;
-    }
-    public static ArrayList mergedZA(ArrayList<String> sortedList, ArrayList<String> leftList, ArrayList<String> rightList) {
-        int leftPointer = 0;
-        int rightPointer = 0;
-        int sortedPointer = 0;
+        ArrayList<String> sortedEvents = new ArrayList<>();
+        for (int i = 0; i < unsortedEvents.length; i++) {
 
-        while (leftPointer < leftList.size() && rightPointer < rightList.size()) {
+            sortedEvents.add(unsortedEvents[i]);
+            System.out.println(sortedEvents.get(i));
 
-            if (leftList.get(leftPointer).equals(rightList.get(rightPointer))) {
-                sortedList.add(leftList.get(leftPointer));
-                leftPointer = leftPointer + 1;
-                sortedList.add(rightList.get(rightPointer));
-                rightPointer = rightPointer + 1;
-            } else {
-                int compare = leftList.get(leftPointer).compareToIgnoreCase(rightList.get(rightPointer));
-                if (compare > 0) {
-                    sortedList.add(leftList.get(leftPointer));
-                    leftPointer = leftPointer + 1;
-                } else {
-                    sortedList.add(rightList.get(rightPointer));
-                    rightPointer = rightPointer + 1;
-                }
-                sortedPointer = sortedPointer + 1;
-            }
         }
         
-        while (rightPointer < rightList.size()) {
-            sortedList.add(rightList.get(rightPointer));
-            rightPointer = rightPointer + 1;
-            sortedPointer = sortedPointer + 1;
-        }
-        while (leftPointer < leftList.size()) {
-            sortedList.add(leftList.get(leftPointer));
-            leftPointer = leftPointer + 1;
-            sortedPointer = sortedPointer + 1;
-        }
-        return sortedList;
+        
     }
-    public static ArrayList mergedDate(ArrayList<String> sortedList, ArrayList<String> leftList, ArrayList<String> rightList) {
+
+    public static void splitList(String[] unsortedEvents, int maxSize, String sortRequest) {
+
+        if (maxSize <= 1) {
+            return;
+        }
+        int midpoint = maxSize / 2;
+        String[] leftList = new String[midpoint];
+
+        String[] rightList = new String[maxSize - midpoint];
+        for (int i = 0; i < midpoint; i++) {
+            leftList[i] = unsortedEvents[i];
+        }
+        for (int i = midpoint; i < maxSize; i++) {
+            rightList[i - midpoint] = unsortedEvents[i];;
+        }
+        splitList(leftList, midpoint, sortRequest);
+        splitList(rightList, maxSize - midpoint, sortRequest);
+
+        if(sortRequest.equals("az")||sortRequest.equals("za")){
+        mergedAZ(leftList, rightList, unsortedEvents, midpoint, maxSize - midpoint);
+        } else if(sortRequest.equals("date")){
+            mergedDate(leftList, rightList, unsortedEvents, midpoint, maxSize - midpoint);
+        } 
+    }
+
+    public static void mergedAZ(String[] leftList, String[] rightList, String[] unsortedEvents, int left, int right) {
+       int leftPointer = 0;
+        int rightPointer = 0;
+        int sortedPointer = 0;
+
+        while (leftPointer < left && rightPointer < right) {
+
+            if (leftList[leftPointer].compareToIgnoreCase(rightList[rightPointer]) < 0) {
+                unsortedEvents[sortedPointer++] = leftList[leftPointer++];
+
+            } else {
+                unsortedEvents[sortedPointer++] = unsortedEvents[sortedPointer++] = rightList[rightPointer++];
+
+            }
+
+        }
+        while (leftPointer < left) {
+            unsortedEvents[sortedPointer++] = leftList[leftPointer++];
+
+        }
+        while (rightPointer < right) {
+            unsortedEvents[sortedPointer++] = rightList[rightPointer++];
+
+        }
+
+    }   
+    public static void mergedDate(String[] leftList, String[] rightList, String[] unsortedEvents, int left, int right) {
         int leftPointer = 0;
         int rightPointer = 0;
         int sortedPointer = 0;
 
-        while (leftPointer < leftList.size() && rightPointer < rightList.size()) {
+        while (leftPointer < left && rightPointer < right) {
 
-            if (databaseOrders.getDate(leftList.get(leftPointer)).isEqual(databaseOrders.getDate(rightList.get(rightPointer)))) {
-                sortedList.add(leftList.get(leftPointer));
-                leftPointer = leftPointer + 1;
-                sortedList.add(rightList.get(rightPointer));
-                rightPointer = rightPointer + 1;
-            } else {
+            
                 
-                if (databaseOrders.getDate(leftList.get(leftPointer)).isBefore(databaseOrders.getDate(rightList.get(rightPointer)))) {
-                    sortedList.add(leftList.get(leftPointer));
+                if (databaseOrders.getDate(leftList[leftPointer]).isBefore(databaseOrders.getDate(rightList[rightPointer++]))) {
+                    unsortedEvents[sortedPointer++] = leftList[leftPointer++];
                     leftPointer = leftPointer + 1;
                 } else {
-                    sortedList.add(rightList.get(rightPointer));
+                    unsortedEvents[sortedPointer++] = rightList[rightPointer++];
                     rightPointer = rightPointer + 1;
                 }
                 sortedPointer = sortedPointer + 1;
-            }
+            
         }
-        while (leftPointer < leftList.size()) {
-            sortedList.add(leftList.get(leftPointer));
+        while (leftPointer < leftList.length) {
+            unsortedEvents[sortedPointer++] = leftList[leftPointer++];
             leftPointer = leftPointer + 1;
             sortedPointer = sortedPointer + 1;
         }
-        while (rightPointer < rightList.size()) {
-            sortedList.add(rightList.get(rightPointer));
+        while (rightPointer < rightList.length) {
+            unsortedEvents[sortedPointer++] = rightList[rightPointer++];
             rightPointer = rightPointer + 1;
             sortedPointer = sortedPointer + 1;
         }
-        return sortedList;
+        
     }
 }

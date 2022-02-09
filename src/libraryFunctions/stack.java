@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class stack {
 
-    private static int stackSize;
+     private static int stackSize;
     private static String[] stack;
     private static int top;
 
@@ -56,7 +56,7 @@ public class stack {
     }
 
     
-    public static ArrayList<String> reverseList(ArrayList<String> sortedList){
+    public static void reverseList(ArrayList<String> sortedList){
         ArrayList<String> reversedList = new ArrayList<>();
         stackSize = sortedList.size();
          top = -1;
@@ -72,7 +72,7 @@ public class stack {
             reversedList.add(event);
             System.out.println(reversedList.get(i));
         }
-        return reversedList;
+        
     }
 
 }

@@ -37,8 +37,6 @@ public class NewJFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        ticketList = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
         eventName = new javax.swing.JTextField();
         confirm = new javax.swing.JButton();
@@ -53,8 +51,6 @@ public class NewJFrame extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-
-        jScrollPane1.setViewportView(ticketList);
 
         jLabel1.setText("What event would you like to see your tickets for?");
 
@@ -85,9 +81,6 @@ public class NewJFrame extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(405, 405, 405)
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(25, 25, 25)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(43, 43, 43)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -120,8 +113,7 @@ public class NewJFrame extends javax.swing.JFrame {
                             .addComponent(eventName)
                             .addComponent(jLabel4)
                             .addComponent(confirm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(222, Short.MAX_VALUE))
         );
 
         pack();
@@ -139,7 +131,7 @@ public class NewJFrame extends javax.swing.JFrame {
         ArrayList<String> tickets = new ArrayList<>();
         int ticketCount = databaseOrders.getNumberOfTickets();
         String eventRequested = new String(eventName.getText());
-        numberOfTickets.setText("Your tickets (" + ticketCount + "):");
+        System.out.println("You have booked a total of "+ticketCount+" tickets");
         ticketID = databaseOrders.getTicketID();
         String eventID = databaseOrders.getEventID(eventRequested);
         ArrayList<String> ticketIDSelected = new ArrayList<>();
@@ -158,7 +150,7 @@ public class NewJFrame extends javax.swing.JFrame {
             tickets.add(ticketStr);
         }
         
-        for (int i = 0; i <= tickets.size(); i++) {
+        for (int i = 0; i < tickets.size(); i++) {
             System.out.println(tickets.get(i));
         }
     }//GEN-LAST:event_confirmActionPerformed
@@ -209,8 +201,6 @@ public class NewJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel numberOfTickets;
-    private javax.swing.JList<String> ticketList;
     // End of variables declaration//GEN-END:variables
 }

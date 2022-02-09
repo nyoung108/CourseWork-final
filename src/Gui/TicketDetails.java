@@ -5,8 +5,8 @@
  */
 package Gui;
 
-import javax.swing.JLabel;
-import libraryFunctions.databaseOrders;
+import static Gui.UpcomingEventsPage.event;
+import Objects.eventStringObject;
 
 /**
  *
@@ -14,11 +14,17 @@ import libraryFunctions.databaseOrders;
  */
 public class TicketDetails extends javax.swing.JFrame {
 
-    
-    private String eventName;
-
+    public static eventStringObject tempTicket;
+    public static eventStringObject ticket;
+    public void getEvent(){
+        tempTicket = UpcomingEventsPage.getEvent();
+    }
+    public static eventStringObject returnEvent(){
+        return ticket;
+    }
     public TicketDetails() {
         initComponents();
+        getEvent();
     }
 
     /**
@@ -118,7 +124,9 @@ public class TicketDetails extends javax.swing.JFrame {
 
     private void standardTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_standardTicketActionPerformed
         String ticketSelected = "standard";
-        AvailableStands.ticketSelectedLabel.setText(ticketSelected);
+        eventStringObject eventEntered = new eventStringObject(tempTicket.getEvent(), ticketSelected, null);
+            ticket = eventEntered;
+        
         AvailableStands availableStands = new AvailableStands();
         
         availableStands.setVisible(true);
@@ -131,7 +139,8 @@ public class TicketDetails extends javax.swing.JFrame {
 
     private void vipTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vipTicketActionPerformed
        String ticketSelected = "vip";
-       AvailableStands.ticketSelectedLabel.setText(ticketSelected);
+       eventStringObject eventEntered = new eventStringObject(tempTicket.getEvent(), ticketSelected, null);
+            ticket = eventEntered;
         AvailableStands availableStands = new AvailableStands();
         
         availableStands.setVisible(true);
@@ -141,7 +150,8 @@ public class TicketDetails extends javax.swing.JFrame {
 
     private void disabledTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_disabledTicketActionPerformed
        String ticketSelected = "disabled";
-        AvailableStands.ticketSelectedLabel.setText(ticketSelected);
+        eventStringObject eventEntered = new eventStringObject(tempTicket.getEvent(), ticketSelected, null);
+            ticket = eventEntered;
         AvailableStands availableStands = new AvailableStands();
         
         availableStands.setVisible(true);
@@ -151,7 +161,8 @@ public class TicketDetails extends javax.swing.JFrame {
 
     private void childTicketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_childTicketActionPerformed
        String ticketSelected = "child";
-        AvailableStands.ticketSelectedLabel.setText(ticketSelected);
+        eventStringObject eventEntered = new eventStringObject(tempTicket.getEvent(), ticketSelected, null);
+            ticket = eventEntered;
         AvailableStands availableStands = new AvailableStands();
         
         availableStands.setVisible(true);
